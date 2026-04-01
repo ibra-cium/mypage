@@ -72,6 +72,7 @@ export const ProjectsSection = () => {
     const [activeCategory, setActiveCategory] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
     const [viewMode, setViewMode] = useState<'scroll' | 'grid'>('grid');
+    const [showAllMobile, setShowAllMobile] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -87,6 +88,12 @@ export const ProjectsSection = () => {
     const filteredProjects = activeCategory === 'All'
         ? PROJECTS_DATA
         : PROJECTS_DATA.filter(p => p.category === activeCategory);
+
+    // On mobile grid view, cap at 3 unless expanded
+    const MOBILE_LIMIT = 3;
+    const isMobileLimited = viewMode === 'grid' && !showAllMobile;
+    const mobileProjects = isMobileLimited ? filteredProjects.slice(0, MOBILE_LIMIT) : filteredProjects;
+    const hasMore = filteredProjects.length > MOBILE_LIMIT;
 
     return (
         <section
@@ -114,7 +121,10 @@ export const ProjectsSection = () => {
                     <FilterTabs
                         categories={CATEGORIES}
                         activeCategory={activeCategory}
-                        onSelectCategory={setActiveCategory}
+                        onSelectCategory={(cat) => {
+                            setActiveCategory(cat);
+                            setShowAllMobile(false); // reset on filter change
+                        }}
                     />
 
                     {/* View toggle — desktop only */}
@@ -139,17 +149,53 @@ export const ProjectsSection = () => {
                 {/* Cards: grid or horizontal scroll */}
                 <div className="w-full px-4 md:px-8">
                     {viewMode === 'grid' ? (
-                        /* ── Grid View — all screen sizes ── */
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {filteredProjects.map((project, index) => (
-                                <ProjectCard
-                                    key={project.id}
-                                    project={project}
-                                    isVisible={isVisible}
-                                    glowColor={GLOW_COLORS[index % 3]}
-                                />
-                            ))}
-                        </div>
+                        <>
+                            {/* Grid — all sizes; mobile shows up to MOBILE_LIMIT */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                                {/* Desktop: all projects */}
+                                {filteredProjects.map((project, index) => (
+                                    <div key={project.id} className="hidden sm:block">
+                                        <ProjectCard
+                                            project={project}
+                                            isVisible={isVisible}
+                                            glowColor={GLOW_COLORS[index % 3]}
+                                        />
+                                    </div>
+                                ))}
+                                {/* Mobile: limited projects */}
+                                {mobileProjects.map((project, index) => (
+                                    <div key={`m-${project.id}`} className="sm:hidden">
+                                        <ProjectCard
+                                            project={project}
+                                            isVisible={isVisible}
+                                            glowColor={GLOW_COLORS[index % 3]}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Mobile expand button */}
+                            {hasMore && !showAllMobile && (
+                                <div className="sm:hidden mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => setShowAllMobile(true)}
+                                        className="px-6 py-2 border border-primary text-primary font-pixel text-[10px] uppercase tracking-widest hover:bg-primary hover:text-void transition-colors rounded"
+                                    >
+                                        Show All {filteredProjects.length} Projects ↓
+                                    </button>
+                                </div>
+                            )}
+                            {showAllMobile && hasMore && (
+                                <div className="sm:hidden mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => setShowAllMobile(false)}
+                                        className="px-6 py-2 border border-border text-text-muted font-pixel text-[10px] uppercase tracking-widest hover:border-primary/50 transition-colors rounded"
+                                    >
+                                        Show Less ↑
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     ) : null}
 
                     {/* ── Scroll View — only when scroll mode is active ── */}
