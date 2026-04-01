@@ -127,7 +127,8 @@ class SoundManager {
 
     private init() {
         if (!this.ctx) {
-            this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const AudioContextClass = window.AudioContext || (window as unknown as Window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+            this.ctx = new AudioContextClass();
         }
         if (this.ctx.state === 'suspended') {
             this.ctx.resume();
