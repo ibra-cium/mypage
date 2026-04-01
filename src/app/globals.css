@@ -458,3 +458,79 @@ body::after {
     scrollbar-width: none;
   }
 }
+/* ═══════════════════════════════════════════════════════
+   RETRO HERO ANIMATION KEYFRAMES
+═══════════════════════════════════════════════════════ */
+
+/* Floating pixel icons: rises from bottom with horizontal sway */
+@keyframes float-up {
+  0%   { transform: translateY(0) translateX(0);               opacity: 0; }
+  8%   { opacity: 0.9; }
+  50%  { transform: translateY(-50vh) translateX(var(--drift, 20px)); opacity: 0.8; }
+  92%  { opacity: 0; }
+  100% { transform: translateY(-110vh) translateX(0);           opacity: 0; }
+}
+
+/* Binary / katakana rain column falling */
+@keyframes rain-fall {
+  0%   { transform: translateY(-110%); }
+  100% { transform: translateY(130vh); }
+}
+
+/* CRT Glitch: main text jitter */
+@keyframes glitch-main {
+  0%, 91%, 100% { transform: translate(0); }
+  92%  { transform: translate(-3px,  1px) skewX(-2deg); }
+  93%  { transform: translate( 3px, -1px) skewX( 2deg); }
+  94%  { transform: translate(-2px,  0);  }
+  95%  { transform: translate( 2px,  1px); }
+  96%  { transform: translate( 0,   -1px); }
+  97%  { transform: translate(-1px,  0); }
+}
+
+/* Red channel slice glitch */
+@keyframes glitch-red {
+  0%, 91%, 100% { opacity: 0; transform: translate(0); clip-path: none; }
+  92%  { opacity: 0.8; clip-path: polygon(0 18%, 100% 18%, 100% 38%, 0 38%); transform: translate(-5px, 0); }
+  93%  { opacity: 0.7; clip-path: polygon(0 58%, 100% 58%, 100% 74%, 0 74%); transform: translate( 5px, 0); }
+  94%  { opacity: 0.5; clip-path: polygon(0 42%, 100% 42%, 100% 52%, 0 52%); transform: translate(-3px, 0); }
+  95%, 96% { opacity: 0; }
+}
+
+/* Blue channel slice glitch */
+@keyframes glitch-blue {
+  0%, 91%, 100% { opacity: 0; transform: translate(0); clip-path: none; }
+  92%  { opacity: 0.7; clip-path: polygon(0 48%, 100% 48%, 100% 64%, 0 64%); transform: translate( 6px, 0); }
+  93%  { opacity: 0.6; clip-path: polygon(0 22%, 100% 22%, 100% 36%, 0 36%); transform: translate(-6px, 0); }
+  94%  { opacity: 0.4; clip-path: polygon(0 68%, 100% 68%, 100% 78%, 0 78%); transform: translate( 4px, 0); }
+  95%, 96% { opacity: 0; }
+}
+
+/* ── Glitch text wrapper classes ────────────────────────────── */
+.glitch-text {
+  position: relative;
+  animation: glitch-main 8s steps(1) infinite;
+  animation-delay: 3s;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glitch-text::before {
+  color: #EF4444;
+  animation: glitch-red 8s steps(1) infinite;
+  animation-delay: 3s;
+  z-index: 1;
+}
+
+.glitch-text::after {
+  color: #3B82F6;
+  animation: glitch-blue 8s steps(1) infinite;
+  animation-delay: 3s;
+  z-index: 2;
+}

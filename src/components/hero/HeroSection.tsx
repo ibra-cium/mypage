@@ -5,6 +5,7 @@ import CRTMonitor from "./CRTMonitor";
 import Win95Window from "./Win95Window";
 import PixelDock from "./PixelDock";
 import CursorTrail from "./CursorTrail";
+import RetroHeroAnimations from "./RetroHeroAnimations";
 
 const HeroSection: React.FC = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -74,6 +75,8 @@ const HeroSection: React.FC = () => {
     return (
         <section id="hero" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
             <CursorTrail />
+            {/* Retro floating icons + binary rain */}
+            <RetroHeroAnimations />
 
             {/* Window Overlay Layer - Absolute to section, doesn't affect flex flow */}
             <div className="absolute inset-0 z-30 pointer-events-none hidden md:block">
@@ -124,7 +127,10 @@ const HeroSection: React.FC = () => {
                     <p className="font-pixel text-[12px] text-primary/80 animate-pulse tracking-widest text-glow-primary">
                         {">"} ibrahim.dev
                     </p>
-                    <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl text-text-primary tracking-tighter leading-[0.9] drop-shadow-2xl">
+                    <h1
+                        className="font-sans font-black text-4xl sm:text-6xl md:text-8xl text-text-primary tracking-tighter leading-[0.9] drop-shadow-2xl glitch-text"
+                        data-text="Siyam Ibrahim"
+                    >
                         Siyam <br />
                         Ibrahim
                     </h1>
