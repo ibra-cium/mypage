@@ -3,25 +3,176 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --color-void: #080B0F;
+  --color-surface: #0D1117;
+  --color-surface-2: #161B22;
+  --color-neon-green: #39FF14;
+  --color-cyber-cyan: #00F5FF;
+  --color-magenta: #FF2D78;
+  --color-purple: #6B21A8;
+  --color-text-primary: #E6EDF3;
+  --color-text-muted: #7D8590;
+  --color-border: #21262D;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: var(--color-void);
+  --foreground: var(--color-text-primary);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* CRT Scanline Effect */
+body::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.04), rgba(13, 17, 23, 0.02), rgba(0, 245, 255, 0.04));
+  z-index: 100;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+/* Base CRT overlay class */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 101;
+}
+
+.scanline {
+  width: 100%;
+  height: 100px;
+  z-index: 102;
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(37, 99, 235, 0.1) 10%,
+      rgba(0, 0, 0, 0) 100%);
+  opacity: 0.05;
+  position: fixed;
+  bottom: 100%;
+  pointer-events: none;
+  animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .glossy-red {
+    background: linear-gradient(135deg, #FF3131 0%, #D00000 100%);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.4),
+      0 4px 15px rgba(255, 49, 49, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glossy-red::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .glossy-blue {
+    background: linear-gradient(135deg, #1E90FF 0%, #0056b3 100%);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.4),
+      0 4px 15px rgba(30, 144, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glossy-blue::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.5), 0 0 10px rgba(57, 255, 20, 0.3);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 5px rgba(0, 245, 255, 0.5), 0 0 10px rgba(0, 245, 255, 0.3);
+  }
+
+  .text-glow-magenta {
+    text-shadow: 0 0 5px rgba(255, 45, 120, 0.5), 0 0 10px rgba(255, 45, 120, 0.3);
+  }
+
+  .glossy-void {
+    background: linear-gradient(135deg, var(--color-void) 0%, var(--color-surface) 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .text-glow-red {
+    text-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
+  }
+
+  .glossy-white {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .text-glow-white {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+
+  .text-glow-blue {
+    text-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+  }
+
+  .glossy-blue-text {
+    background: linear-gradient(to bottom, #FFFFFF 0%, #1E90FF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 2px rgba(30, 144, 255, 0.3));
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
