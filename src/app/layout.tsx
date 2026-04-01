@@ -17,7 +17,7 @@ const pressStart2P = Press_Start_2P({
 
 export const metadata: Metadata = {
   title: "Siyam Ibrahim | Student & Hobbyist",
-  description: "CSE Undergrad @ DIU, AI Engineer in the making. Mastering ML, DL, and AGI with Siyam Ibrahim.",
+  description: "CSE Undergrad @ DIU",
 };
 
 export default function RootLayout({
