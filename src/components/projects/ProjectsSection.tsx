@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import SectionLabel from '@/components/ui/SectionLabel';
-import { GlassContainer } from './GlassContainer';
+// import { GlassContainer } from './GlassContainer';
 import { FilterTabs } from './FilterTabs';
 import { ProjectCard, Project } from './ProjectCard';
 
@@ -46,6 +46,16 @@ const PROJECTS_DATA: Project[] = [
         cartId: 'CART-004',
         url: 'https://github.com/ibra-cium/TODO-',
     },
+    {
+        id: '5',
+        title: 'Ibrahim Portfolio (MyPage)',
+        description: 'The very site you are seeing right now. A retro-modern, cyberpunk-themed portfolio with a terminal-styled AI chat assistant.',
+        tags: ['Next.js', 'React', 'Tailwind', 'AI'],
+        category: 'Web',
+        icon: '🌐',
+        cartId: 'CART-005',
+        url: 'https://github.com/ibra-cium/mypage',
+    },
 ];
 
 const CATEGORIES = ['All', 'AI / ML', 'Web', 'Games', 'Tools'];
@@ -56,6 +66,7 @@ export const ProjectsSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        const currentSection = sectionRef.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -65,13 +76,13 @@ export const ProjectsSection = () => {
             { threshold: 0.1 }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        if (currentSection) {
+            observer.observe(currentSection);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentSection) {
+                observer.unobserve(currentSection);
             }
         };
     }, []);
@@ -97,7 +108,7 @@ export const ProjectsSection = () => {
                         Projects
                     </h2>
                     <p className="text-text-muted font-sans text-lg max-w-lg">
-                        Things I've built, shipped, and obsessed over while chasing the dream of AGI.
+                        Things I&apos;ve built, shipped, and obsessed over while chasing the dream of AGI.
                     </p>
                 </div>
 

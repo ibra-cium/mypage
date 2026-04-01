@@ -38,7 +38,7 @@ const GameSection: React.FC = () => {
                             <div>
                                 <h4 className="text-text-primary font-bold mb-1">PRO-TIP, IBRAHIM!</h4>
                                 <p className="text-sm text-text-muted leading-relaxed">
-                                    "Jump through my technical stack! Use <span className="text-neon-green font-mono">ARROWS</span> to move and <span className="text-neon-green font-mono">Z/UP</span> to jump. High score saves to your local terminal!"
+                                    &quot;Jump through my technical stack! Use <span className="text-neon-green font-mono">ARROWS</span> to move and <span className="text-neon-green font-mono">Z/UP</span> to jump. High score saves to your local terminal!&quot;
                                 </p>
                             </div>
                         </div>

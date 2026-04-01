@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Send, Terminal as TerminalIcon, X, Maximize2, Minimize2 } from "lucide-react";
+import { Send, Terminal as TerminalIcon, X } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 
 interface Message {

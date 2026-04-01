@@ -1,5 +1,3 @@
-import SectionLabel from "@/components/ui/SectionLabel";
-import NoiseBg from "@/components/ui/NoiseBg";
 import HeroSection from "@/components/hero/HeroSection";
 import { ProjectsSection } from "@/components/projects/ProjectsSection";
 import AboutSection from "@/components/about/AboutSection";

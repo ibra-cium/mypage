@@ -48,7 +48,7 @@ export async function POST(req: Request) {
             startIndex++;
         }
 
-        const recentMessages = messages.slice(startIndex).map((m: any) => ({
+        const recentMessages = messages.slice(startIndex).map((m: { role: string; content: string }) => ({
             role: m.role === "user" ? "user" : "model",
             parts: [{ text: m.content }],
         }));
@@ -110,9 +110,9 @@ export async function POST(req: Request) {
             },
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Chat API Error:", error);
-        return new Response(JSON.stringify({ error: error.message || "Internal Server Error" }), {
+        return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Internal Server Error" }), {
             status: 500,
             headers: { "Content-Type": "application/json" }
         });
