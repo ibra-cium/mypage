@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import CRTMonitor from "./CRTMonitor";
 import Win95Window from "./Win95Window";
 import PixelDock from "./PixelDock";
-import CursorTrail from "./CursorTrail";
+
 import RetroHeroAnimations from "./RetroHeroAnimations";
 
 const HeroSection: React.FC = () => {
@@ -74,7 +74,7 @@ const HeroSection: React.FC = () => {
 
     return (
         <section id="hero" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
-            <CursorTrail />
+
             {/* Retro floating icons + binary rain */}
             <RetroHeroAnimations />
 

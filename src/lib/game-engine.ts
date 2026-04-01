@@ -122,6 +122,56 @@ const LEVEL_CONFIGS: LevelConfig[] = [
     },
 ];
 
+class SoundManager {
+    private ctx: AudioContext | null = null;
+
+    private init() {
+        if (!this.ctx) {
+            this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    private playTone(freq: number, type: OscillatorType, duration: number, volume: number = 0.1, sweep?: number) {
+        this.init();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        if (sweep) {
+            osc.frequency.exponentialRampToValueAtTime(sweep, this.ctx.currentTime + duration);
+        }
+
+        gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+    }
+
+    public playJump() { this.playTone(150, 'square', 0.1, 0.05, 600); }
+    public playDash() { this.playTone(400, 'sawtooth', 0.15, 0.05, 50); }
+    public playCoin() { this.playTone(880, 'triangle', 0.1, 0.08); setTimeout(() => this.playTone(1320, 'triangle', 0.15, 0.08), 50); }
+    public playHurt() { this.playTone(100, 'sawtooth', 0.3, 0.12, 10); }
+    public playLevelClear() {
+        const now = 0.1;
+        this.playTone(523.25, 'square', now, 0.05); // C5
+        setTimeout(() => this.playTone(659.25, 'square', now, 0.05), 100); // E5
+        setTimeout(() => this.playTone(783.99, 'square', now, 0.05), 200); // G5
+        setTimeout(() => this.playTone(1046.50, 'square', 0.3, 0.05), 300); // C6
+    }
+    public playGameOver() { this.playTone(200, 'sawtooth', 0.5, 0.1, 20); }
+    public playMenu() { this.playTone(440, 'sine', 0.05, 0.05); }
+}
+
 export class GameEngine {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -140,6 +190,7 @@ export class GameEngine {
     private enemies: Enemy[] = [];
 
     private keys: Record<string, boolean> = {};
+    private sound: SoundManager = new SoundManager();
 
     private onStateChange?: (state: GameState) => void;
     private onScoreChange?: (score: number) => void;
@@ -247,10 +298,12 @@ export class GameEngine {
             this.updateState('PLAYING');
             this.lastTime = performance.now();
             this.loop(this.lastTime);
+            this.sound.playMenu();
         }
     }
 
     public toggleStart() {
+        this.sound.playMenu();
         if (this.state === 'IDLE' || this.state === 'GAME_OVER') {
             this.start();
         } else if (this.state === 'PLAYING') {
@@ -312,6 +365,7 @@ export class GameEngine {
                 localStorage.setItem('gba-portfolio-highscore', this.highScore.toString());
             }
             this.updateState('GAME_OVER');
+            this.sound.playLevelClear();
         }
     }
 
@@ -338,6 +392,7 @@ export class GameEngine {
         if ((this.keys['ArrowUp'] || this.keys['Space'] || this.keys['KeyW'] || this.keys['KeyZ']) && !this.player.isJumping) {
             this.player.velocityY = -10;
             this.player.isJumping = true;
+            this.sound.playJump();
         }
 
         if ((this.keys['KeyX'] || this.keys['ShiftLeft']) && !this.player.isDashing && this.player.dashCooldown <= 0) {
@@ -404,6 +459,7 @@ export class GameEngine {
             if (!c.collected && this.checkCollision(this.player, c)) {
                 c.collected = true;
                 this.score += 100;
+                this.sound.playCoin();
                 if (this.onScoreChange) this.onScoreChange(this.score);
                 const newCollected = this.coins.filter(c2 => c2.collected).length;
                 if (this.onCoinsChange) this.onCoinsChange(newCollected, this.coins.length);
@@ -416,6 +472,7 @@ export class GameEngine {
             if (this.onScoreChange) this.onScoreChange(this.score);
             this.updateState('LEVEL_COMPLETE');
             this.levelCompleteTimer = 0;
+            this.sound.playLevelClear();
             return;
         }
 
@@ -432,6 +489,7 @@ export class GameEngine {
 
             if (this.checkCollision(this.player, e)) {
                 this.player.lives--;
+                this.sound.playHurt();
                 if (this.onLivesChange) this.onLivesChange(this.player.lives);
                 this.player.x = 50;
                 this.player.y = 200;
@@ -440,6 +498,7 @@ export class GameEngine {
 
                 if (this.player.lives <= 0) {
                     this.updateState('GAME_OVER');
+                    this.sound.playGameOver();
                     if (this.score > this.highScore) {
                         this.highScore = this.score;
                         localStorage.setItem('gba-portfolio-highscore', this.highScore.toString());
@@ -453,12 +512,16 @@ export class GameEngine {
         if (this.player.x + this.player.width > this.canvas.width) this.player.x = this.canvas.width - this.player.width;
         if (this.player.y > this.canvas.height) {
             this.player.lives--;
+            this.sound.playHurt();
             if (this.onLivesChange) this.onLivesChange(this.player.lives);
             this.player.x = 50;
             this.player.y = 200;
             this.player.velocityX = 0;
             this.player.velocityY = 0;
-            if (this.player.lives <= 0) this.updateState('GAME_OVER');
+            if (this.player.lives <= 0) {
+                this.updateState('GAME_OVER');
+                this.sound.playGameOver();
+            }
         }
     }
 
@@ -631,6 +694,7 @@ export class GameEngine {
         if (!this.player.isJumping) {
             this.player.velocityY = -10;
             this.player.isJumping = true;
+            this.sound.playJump();
         }
         if (this.state === 'GAME_OVER' || this.state === 'IDLE') {
             this.start();
@@ -641,6 +705,7 @@ export class GameEngine {
             this.player.isDashing = true;
             this.player.dashCooldown = 30;
             this.player.velocityX *= 3;
+            this.sound.playDash();
             setTimeout(() => {
                 this.player.isDashing = false;
             }, 200);

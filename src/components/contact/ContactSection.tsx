@@ -10,7 +10,7 @@ export const ContactSection: React.FC = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon-green/5 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto px-4 relative z-10">
-                <div className="grid grid-cols-12 gap-8">
+                <div className="grid grid-cols-12 gap-4 md:gap-8">
                     {/* Header */}
                     <div className="col-span-12 lg:col-span-8 lg:col-start-3 text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-glow-green">
@@ -32,7 +32,7 @@ export const ContactSection: React.FC = () => {
                         <div className="flex flex-col items-center gap-8">
                             <div className="flex items-center gap-4 w-full">
                                 <div className="h-px flex-1 bg-border" />
-                                <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">Direct Channels</span>
+                                <span className="text-[9px] md:text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap">Direct Channels</span>
                                 <div className="h-px flex-1 bg-border" />
                             </div>
                             <ContactLinks />

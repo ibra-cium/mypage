@@ -54,7 +54,7 @@ const CONTACT_LINKS = [
 
 export const ContactLinks: React.FC = () => {
     return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 w-full">
             {CONTACT_LINKS.map((link) => (
                 <a
                     key={link.name}

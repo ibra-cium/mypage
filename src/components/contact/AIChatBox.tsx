@@ -111,7 +111,7 @@ export const AIChatBox: React.FC = () => {
     };
 
     return (
-        <div className="w-full max-w-[1000px] mx-auto bg-surface border border-border shadow-2xl rounded-lg overflow-hidden flex flex-col h-[650px] relative">
+        <div className="w-full max-w-[1000px] mx-auto bg-surface border border-border shadow-2xl rounded-lg overflow-hidden flex flex-col h-[500px] md:h-[650px] relative">
             {/* Win95 style Titlebar */}
             <div className="bg-surface-2 border-b border-border p-2 flex items-center justify-between select-none">
                 <div className="flex items-center gap-2">
@@ -120,8 +120,8 @@ export const AIChatBox: React.FC = () => {
                         <TerminalIcon className="w-3 h-3" /> chat.exe — ibrahim_ai v1.0
                     </span>
                 </div>
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-void/50 rounded border border-neon-green/20">
+                <div className="flex items-center gap-1 md:gap-3">
+                    <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-void/50 rounded border border-neon-green/20">
                         <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
                         <span className="text-[9px] font-bold text-neon-green">GEMINI-3.1 · ONLINE</span>
                     </div>
