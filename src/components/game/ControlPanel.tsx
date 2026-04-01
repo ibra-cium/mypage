@@ -16,19 +16,19 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ engine }) => {
                 <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-6 md:h-8 bg-surface-2 rounded-sm shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] flex justify-between px-1">
                     <button
                         className="w-5 md:w-7 h-full active:bg-surface-2/80 transition-colors"
-                        onMouseDown={() => engine?.moveLeft()}
-                        onMouseUp={() => engine?.stopLeft()}
-                        onMouseLeave={() => engine?.stopLeft()}
-                        onTouchStart={() => engine?.moveLeft()}
-                        onTouchEnd={() => engine?.stopLeft()}
+                        onMouseDown={(e) => { e.preventDefault(); engine?.moveLeft(); }}
+                        onMouseUp={(e) => { e.preventDefault(); engine?.stopLeft(); }}
+                        onMouseLeave={(e) => { e.preventDefault(); engine?.stopLeft(); }}
+                        onTouchStart={(e) => { e.preventDefault(); engine?.moveLeft(); }}
+                        onTouchEnd={(e) => { e.preventDefault(); engine?.stopLeft(); }}
                     />
                     <button
                         className="w-5 md:w-7 h-full active:bg-surface-2/80 transition-colors"
-                        onMouseDown={() => engine?.moveRight()}
-                        onMouseUp={() => engine?.stopRight()}
-                        onMouseLeave={() => engine?.stopRight()}
-                        onTouchStart={() => engine?.moveRight()}
-                        onTouchEnd={() => engine?.stopRight()}
+                        onMouseDown={(e) => { e.preventDefault(); engine?.moveRight(); }}
+                        onMouseUp={(e) => { e.preventDefault(); engine?.stopRight(); }}
+                        onMouseLeave={(e) => { e.preventDefault(); engine?.stopRight(); }}
+                        onTouchStart={(e) => { e.preventDefault(); engine?.moveRight(); }}
+                        onTouchEnd={(e) => { e.preventDefault(); engine?.stopRight(); }}
                     />
                 </div>
                 {/* Vertical Bar */}
@@ -63,7 +63,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ engine }) => {
                 <div className="flex flex-col items-center gap-1 md:gap-2">
                     <button
                         className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border-2 border-secondary bg-surface-2/50 shadow-[0_0_15px_-5px_rgba(124,58,237,0.5)] active:scale-90 transition-transform flex items-center justify-center"
-                        onClick={() => engine?.dash()}
+                        onMouseDown={(e) => { e.preventDefault(); engine?.dash(); }}
+                        onTouchStart={(e) => { e.preventDefault(); engine?.dash(); }}
                     >
                         <span className="text-secondary font-bold text-sm md:text-lg pointer-events-none">B</span>
                     </button>
@@ -72,7 +73,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ engine }) => {
                 <div className="flex flex-col items-center gap-1 md:gap-2 -mt-3 md:-mt-4">
                     <button
                         className="w-[52px] h-[52px] sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-2 border-primary bg-surface-2/50 shadow-[0_0_20px_-5px_rgba(245,166,35,0.5)] active:scale-90 transition-transform flex items-center justify-center"
-                        onClick={() => engine?.jump()}
+                        onMouseDown={(e) => { e.preventDefault(); engine?.jump(); }}
+                        onTouchStart={(e) => { e.preventDefault(); engine?.jump(); }}
                     >
                         <span className="text-primary font-bold text-lg md:text-xl pointer-events-none">A</span>
                     </button>

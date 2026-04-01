@@ -74,19 +74,19 @@ const LEVEL_CONFIGS: LevelConfig[] = [
             { x: 60, y: 240, width: 90, height: 10, color: '#F5A623', type: 'static' },
             { x: 190, y: 195, width: 90, height: 10, color: '#F5A623', type: 'moving', moveStartX: 190, moveRange: 80 },
             { x: 310, y: 150, width: 90, height: 10, color: '#7C3AED', type: 'static' },
-            { x: 400, y: 235, width: 90, height: 10, color: '#F5A623', type: 'moving', moveStartX: 400, moveRange: 60 },
-            { x: 510, y: 190, width: 70, height: 10, color: '#F5A623', type: 'static' },
+            { x: 400, y: 235, width: 70, height: 10, color: '#F5A623', type: 'moving', moveStartX: 400, moveRange: 10 },
+            { x: 410, y: 190, width: 60, height: 10, color: '#F5A623', type: 'static' },
         ],
         coins: [
             { x: 75, y: 210, width: 12, height: 12, color: '#7C3AED' },
             { x: 220, y: 165, width: 12, height: 12, color: '#7C3AED' },
             { x: 330, y: 120, width: 12, height: 12, color: '#7C3AED' },
             { x: 430, y: 205, width: 12, height: 12, color: '#7C3AED' },
-            { x: 530, y: 160, width: 12, height: 12, color: '#7C3AED' },
+            { x: 440, y: 160, width: 12, height: 12, color: '#7C3AED' },
         ],
         enemies: [
             { x: 230, y: 272, width: 20, height: 20, color: '#EF4444', direction: 1, bounceLeft: 150, bounceRight: 380 },
-            { x: 420, y: 272, width: 20, height: 20, color: '#EF4444', direction: -1, bounceLeft: 330, bounceRight: 580 },
+            { x: 420, y: 272, width: 20, height: 20, color: '#EF4444', direction: -1, bounceLeft: 300, bounceRight: 460 },
         ],
     },
     // ── Level 3: AGI Endgame ────────────────────────────────────
@@ -99,25 +99,25 @@ const LEVEL_CONFIGS: LevelConfig[] = [
             { x: 150, y: 210, width: 80, height: 10, color: '#F5A623', type: 'moving', moveStartX: 150, moveRange: 70 },
             { x: 270, y: 165, width: 80, height: 10, color: '#7C3AED', type: 'disappearing', disappearTimer: 2000 },
             { x: 360, y: 115, width: 80, height: 10, color: '#F5A623', type: 'static' },
-            { x: 460, y: 165, width: 80, height: 10, color: '#F5A623', type: 'moving', moveStartX: 460, moveRange: 60 },
+            { x: 380, y: 165, width: 80, height: 10, color: '#F5A623', type: 'moving', moveStartX: 380, moveRange: 20 },
             { x: 240, y: 255, width: 70, height: 10, color: '#F5A623', type: 'static' },
-            { x: 520, y: 240, width: 70, height: 10, color: '#F5A623', type: 'moving', moveStartX: 520, moveRange: 50 },
+            { x: 400, y: 240, width: 70, height: 10, color: '#F5A623', type: 'moving', moveStartX: 400, moveRange: 10 },
         ],
         coins: [
             { x: 50, y: 225, width: 12, height: 12, color: '#F5A623' },
             { x: 175, y: 180, width: 12, height: 12, color: '#F5A623' },
             { x: 285, y: 135, width: 12, height: 12, color: '#F5A623' },
             { x: 375, y: 85, width: 12, height: 12, color: '#F5A623' },
-            { x: 475, y: 135, width: 12, height: 12, color: '#F5A623' },
+            { x: 400, y: 135, width: 12, height: 12, color: '#F5A623' },
             { x: 250, y: 225, width: 12, height: 12, color: '#F5A623' },
-            { x: 535, y: 210, width: 12, height: 12, color: '#F5A623' },
+            { x: 440, y: 210, width: 12, height: 12, color: '#F5A623' },
         ],
         enemies: [
             { x: 60, y: 272, width: 20, height: 20, color: '#EF4444', direction: 1, bounceLeft: 10, bounceRight: 200 },
             { x: 300, y: 272, width: 20, height: 20, color: '#EF4444', direction: -1, bounceLeft: 200, bounceRight: 430 },
-            { x: 450, y: 272, width: 20, height: 20, color: '#EF4444', direction: 1, bounceLeft: 370, bounceRight: 580 },
+            { x: 400, y: 272, width: 20, height: 20, color: '#EF4444', direction: 1, bounceLeft: 350, bounceRight: 460 },
             // Boss enemy
-            { x: 200, y: 272, width: 28, height: 28, color: '#F5A623', direction: 1, bounceLeft: 0, bounceRight: 572, isBoss: true },
+            { x: 200, y: 272, width: 28, height: 28, color: '#F5A623', direction: 1, bounceLeft: 0, bounceRight: 452, isBoss: true },
         ],
     },
 ];
@@ -382,10 +382,12 @@ export class GameEngine {
         if (this.player.dashCooldown > 0) this.player.dashCooldown--;
 
         // Player controls
-        if (this.keys['ArrowLeft'] || this.keys['KeyA']) {
-            this.player.velocityX = this.player.isDashing ? -12 : -4 * speedMult;
-        } else if (this.keys['ArrowRight'] || this.keys['KeyD']) {
-            this.player.velocityX = this.player.isDashing ? 12 : 4 * speedMult;
+        let moveDir = 0;
+        if (this.keys['ArrowLeft'] || this.keys['KeyA']) moveDir -= 1;
+        if (this.keys['ArrowRight'] || this.keys['KeyD']) moveDir += 1;
+
+        if (moveDir !== 0) {
+            this.player.velocityX = this.player.isDashing ? moveDir * 12 : moveDir * 4 * speedMult;
         } else {
             this.player.velocityX *= 0.8;
         }
