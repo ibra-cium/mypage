@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 
 const CharacterCard = () => {
     return (
@@ -14,12 +15,14 @@ const CharacterCard = () => {
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
                     <div className="relative w-24 h-24 shrink-0 group-hover:scale-105 transition-transform duration-500">
                         <div className="absolute inset-0 bg-[var(--color-neon-green)]/10 animate-pulse rounded-sm" />
-                        <img
+                        <Image
                             src="/github_profile.png"
                             alt="Ibrahim"
+                            width={96}
+                            height={96}
                             className="w-full h-full object-cover rounded-sm border-2 border-[var(--color-neon-green)] relative z-10 pixelated shadow-[0_0_20px_rgba(57,255,20,0.4)]"
                             onError={(e) => {
-                                e.currentTarget.src = "https://api.dicebear.com/7.x/pixel-art/svg?seed=Ibrahim";
+                                (e.currentTarget as HTMLImageElement).src = "https://api.dicebear.com/7.x/pixel-art/svg?seed=Ibrahim";
                             }}
                         />
                         {/* Status Indicator */}
