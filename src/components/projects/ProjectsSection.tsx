@@ -71,7 +71,7 @@ const GLOW_COLORS: ('primary' | 'secondary' | 'accent')[] = ['primary', 'seconda
 export const ProjectsSection = () => {
     const [activeCategory, setActiveCategory] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
-    const [viewMode, setViewMode] = useState<'scroll' | 'grid'>('scroll');
+    const [viewMode, setViewMode] = useState<'scroll' | 'grid'>('grid');
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -139,8 +139,8 @@ export const ProjectsSection = () => {
                 {/* Cards: grid or horizontal scroll */}
                 <div className="w-full px-4 md:px-8">
                     {viewMode === 'grid' ? (
-                        /* ── Grid View (desktop only) ── */
-                        <div className="hidden md:grid grid-cols-2 xl:grid-cols-3 gap-6">
+                        /* ── Grid View — all screen sizes ── */
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                             {filteredProjects.map((project, index) => (
                                 <ProjectCard
                                     key={project.id}
@@ -152,8 +152,8 @@ export const ProjectsSection = () => {
                         </div>
                     ) : null}
 
-                    {/* ── Scroll View — always shown on mobile, shown on desktop when in scroll mode ── */}
-                    <div className={`flex overflow-x-auto pb-10 gap-6 snap-x snap-mandatory scrollbar-hide ${viewMode === 'grid' ? 'md:hidden' : ''}`}>
+                    {/* ── Scroll View — only when scroll mode is active ── */}
+                    <div className={`flex overflow-x-auto pb-10 gap-6 snap-x snap-mandatory scrollbar-hide ${viewMode === 'grid' ? 'hidden' : ''}`}>
                         {PROJECTS_DATA.map((project, index) => {
                             const isProjectVisible = filteredProjects.some(p => p.id === project.id);
                             if (!isProjectVisible) return null;
