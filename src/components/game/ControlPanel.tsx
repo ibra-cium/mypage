@@ -11,7 +11,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ engine }) => {
     return (
         <div className="mt-4 md:mt-8 flex justify-between items-center px-2 md:px-12 pb-4 md:pb-10">
             {/* D-Pad */}
-            <div className="relative w-16 h-16 md:w-24 md:h-24 flex-shrink-0">
+            <div className="relative w-[64px] h-[64px] sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0">
                 {/* Horizontal Bar */}
                 <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-6 md:h-8 bg-surface-2 rounded-sm shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] flex justify-between px-1">
                     <button
@@ -62,19 +62,19 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ engine }) => {
             <div className="relative flex gap-1 md:gap-6 rotate-[-10deg] md:rotate-[-15deg] flex-shrink-0">
                 <div className="flex flex-col items-center gap-1 md:gap-2">
                     <button
-                        className="w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-cyber-cyan bg-surface-2/50 shadow-[0_0_15px_-5px_rgba(0,245,255,0.6)] active:scale-90 transition-transform flex items-center justify-center"
+                        className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border-2 border-secondary bg-surface-2/50 shadow-[0_0_15px_-5px_rgba(124,58,237,0.5)] active:scale-90 transition-transform flex items-center justify-center"
                         onClick={() => engine?.dash()}
                     >
-                        <span className="text-cyber-cyan font-bold text-sm md:text-lg pointer-events-none">B</span>
+                        <span className="text-secondary font-bold text-sm md:text-lg pointer-events-none">B</span>
                     </button>
                     <span className="text-[6px] md:text-[8px] text-text-muted font-press-start-2p">DASH</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 md:gap-2 -mt-3 md:-mt-4">
                     <button
-                        className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-neon-green bg-surface-2/50 shadow-[0_0_20px_-5px_rgba(57,255,20,0.6)] active:scale-90 transition-transform flex items-center justify-center"
+                        className="w-[52px] h-[52px] sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-2 border-primary bg-surface-2/50 shadow-[0_0_20px_-5px_rgba(245,166,35,0.5)] active:scale-90 transition-transform flex items-center justify-center"
                         onClick={() => engine?.jump()}
                     >
-                        <span className="text-neon-green font-bold text-lg md:text-xl pointer-events-none">A</span>
+                        <span className="text-primary font-bold text-lg md:text-xl pointer-events-none">A</span>
                     </button>
                     <span className="text-[6px] md:text-[8px] text-text-muted font-press-start-2p">JUMP</span>
                 </div>

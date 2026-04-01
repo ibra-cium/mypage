@@ -21,7 +21,7 @@ const GBAShell: React.FC<GBAShellProps> = ({ children }) => {
                 {/* Screen Label */}
                 <div className="mt-2 flex justify-between items-center px-1">
                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 rounded-full bg-neon-green shadow-[0_0_5px_rgba(57,255,20,0.5)]" />
+                        <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_rgba(245,166,35,0.5)]" />
                         <span className="text-[6px] text-text-muted font-press-start-2p uppercase tracking-widest opacity-50">Power</span>
                     </div>
                     <span className="text-[8px] text-text-muted font-press-start-2p font-bold italic tracking-tighter opacity-30">ADVANCE PORTFOLIO</span>

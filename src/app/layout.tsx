@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,14 +27,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${pressStart2P.variable} antialiased selection:bg-cyber-cyan selection:text-void bg-void text-text-primary`}>
+      <body
+        className={`${inter.variable} ${pressStart2P.variable} antialiased selection:bg-secondary selection:text-void text-text-primary`}
+        style={{ background: "#07080D" }}
+      >
+        {/* ── Animated background — z:0, always behind content ── */}
+        <AnimatedBackground />
+
+        {/* ── CRT overlays ─────────────────────────────────────── */}
         <div className="crt-overlay" />
         <div className="scanline" />
-        <div className="relative z-10">
+
+        {/* ── Page content — no z-index (stays in normal flow) ── */}
+        <div className="relative">
           {children}
         </div>
       </body>
     </html>
   );
 }
-

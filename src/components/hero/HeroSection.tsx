@@ -69,10 +69,10 @@ const HeroSection: React.FC = () => {
     }, []);
 
 
-    if (!isMounted) return <section className="h-screen bg-background" />;
+    if (!isMounted) return <section className="h-screen" />;
 
     return (
-        <section id="hero" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background">
+        <section id="hero" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
             <CursorTrail />
 
             {/* Window Overlay Layer - Absolute to section, doesn't affect flex flow */}
@@ -89,7 +89,7 @@ const HeroSection: React.FC = () => {
                 >
                     <Win95Window title="projects.exe" initialX={-150} initialY={100}>
                         <div className="space-y-1 font-mono text-[10px]">
-                            <p className="text-neon-green font-bold uppercase tracking-tighter">
+                            <p className="text-primary font-bold uppercase tracking-tighter">
                                 C:\portfolio\projects</p>
                             <p className="text-text-muted font-sans font-normal text-xs">{">"} 12 items found</p>
                             <p className="text-text-muted font-sans font-normal text-xs">{">"} last modified: today</p>
@@ -121,14 +121,14 @@ const HeroSection: React.FC = () => {
             {/* Main Centered Content */}
             <div className="flex flex-col items-center text-center z-20 space-y-12">
                 <div ref={headerRef} className="space-y-4 px-6 relative">
-                    <p className="font-pixel text-[12px] text-neon-green/80 animate-pulse tracking-widest text-glow-green">
+                    <p className="font-pixel text-[12px] text-primary/80 animate-pulse tracking-widest text-glow-primary">
                         {">"} ibrahim.dev
                     </p>
-                    <h1 className="font-sans font-black text-6xl md:text-8xl text-text-primary tracking-tighter leading-[0.9] drop-shadow-2xl">
+                    <h1 className="font-sans font-black text-4xl sm:text-6xl md:text-8xl text-text-primary tracking-tighter leading-[0.9] drop-shadow-2xl">
                         Siyam <br />
                         Ibrahim
                     </h1>
-                    <p className="font-sans font-bold text-xl md:text-2xl text-cyber-cyan tracking-tight text-glow-cyan">
+                    <p className="font-sans font-bold text-lg sm:text-xl md:text-2xl text-secondary tracking-tight text-glow-cyan">
                         Student & Hobbyist
                     </p>
                 </div>

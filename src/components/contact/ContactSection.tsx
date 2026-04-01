@@ -4,7 +4,7 @@ import { ContactLinks } from "./ContactLinks";
 
 export const ContactSection: React.FC = () => {
     return (
-        <section id="contact" className="py-24 relative overflow-hidden bg-void">
+        <section id="contact" className="py-24 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon-green/5 rounded-full blur-[120px] pointer-events-none" />

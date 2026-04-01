@@ -12,6 +12,11 @@ const config: Config = {
         void: "var(--color-void)",
         surface: "var(--color-surface)",
         "surface-2": "var(--color-surface-2)",
+        // New palette tokens
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+        // Legacy aliases — all now point to new values via CSS vars
         "neon-green": "var(--color-neon-green)",
         "cyber-cyan": "var(--color-cyber-cyan)",
         magenta: "var(--color-magenta)",
@@ -47,11 +52,22 @@ const config: Config = {
       },
       animation: {
         scanline: "scanline 10s linear infinite",
+        "pulse-blob": "pulse-blob 8s ease-in-out infinite",
+        drift: "drift 18s ease-in-out infinite",
       },
       keyframes: {
         scanline: {
           "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(calc(100vh + 100%))" },
+        },
+        "pulse-blob": {
+          "0%, 100%": { opacity: "0.15", transform: "scale(1)" },
+          "50%": { opacity: "0.25", transform: "scale(1.08)" },
+        },
+        drift: {
+          "0%, 100%": { transform: "translateY(0px) translateX(0px)" },
+          "33%": { transform: "translateY(-8px) translateX(4px)" },
+          "66%": { transform: "translateY(-4px) translateX(-4px)" },
         },
       },
     },
@@ -59,4 +75,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
