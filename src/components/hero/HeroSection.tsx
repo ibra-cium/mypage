@@ -135,7 +135,7 @@ const HeroSection: React.FC = () => {
                         Ibrahim
                     </h1>
                     <p className="font-sans font-bold text-lg sm:text-xl md:text-2xl text-secondary tracking-tight text-glow-cyan">
-                        CSE Undergrad @ DIU
+                        CSE Undergrad at DIU
                     </p>
                     <p className="font-pixel text-[10px] text-text-muted mt-2 uppercase tracking-widest opacity-70">
                         Student & Hobbyist
