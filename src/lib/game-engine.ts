@@ -199,6 +199,7 @@ export class GameEngine {
     private onTimerChange?: (timer: number) => void;
     private onLevelChange?: (level: number) => void;
     private onCoinsChange?: (collected: number, total: number) => void;
+    private onWin?: () => void;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -284,6 +285,7 @@ export class GameEngine {
         onTimerChange?: (timer: number) => void;
         onLevelChange?: (level: number) => void;
         onCoinsChange?: (collected: number, total: number) => void;
+        onWin?: () => void;
     }) {
         this.onStateChange = callbacks.onStateChange;
         this.onScoreChange = callbacks.onScoreChange;
@@ -291,6 +293,7 @@ export class GameEngine {
         this.onTimerChange = callbacks.onTimerChange;
         this.onLevelChange = callbacks.onLevelChange;
         this.onCoinsChange = callbacks.onCoinsChange;
+        this.onWin = callbacks.onWin;
     }
 
     public start() {
@@ -367,6 +370,7 @@ export class GameEngine {
             }
             this.updateState('GAME_OVER');
             this.sound.playLevelClear();
+            if (this.onWin) this.onWin();
         }
     }
 

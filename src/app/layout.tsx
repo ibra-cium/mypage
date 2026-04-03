@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
+import { RetroProvider } from "@/components/providers/RetroProvider";
+import { AchievementProvider } from "@/components/providers/AchievementProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,17 +33,16 @@ export default function RootLayout({
         className={`${inter.variable} ${pressStart2P.variable} antialiased selection:bg-secondary selection:text-void text-text-primary`}
         style={{ background: "#07080D" }}
       >
-        {/* ── Animated background — z:0, always behind content ── */}
-        <AnimatedBackground />
+        <RetroProvider>
+          <AchievementProvider>
+            {/* Animated background — z:0, always behind content */}
+            <AnimatedBackground />
 
-        {/* ── CRT overlays ─────────────────────────────────────── */}
-        <div className="crt-overlay" />
-        <div className="scanline" />
-
-        {/* ── Page content — no z-index (stays in normal flow) ── */}
-        <div className="relative">
-          {children}
-        </div>
+            <div className="relative">
+              {children}
+            </div>
+          </AchievementProvider>
+        </RetroProvider>
       </body>
     </html>
   );

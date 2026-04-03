@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRetro } from "@/components/providers/RetroProvider";
+import { useAchievements } from "@/components/providers/AchievementProvider";
 
 const icons = [
     { label: "PROJECTS", icon: "📁", colorClass: "text-primary", id: "projects" },
@@ -11,6 +13,8 @@ const icons = [
 ];
 
 const PixelDock: React.FC = () => {
+    const { isRetroActive, toggleRetro } = useRetro();
+    const { unlock } = useAchievements();
     const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
 
     const scrollToSection = (id: string) => {
@@ -62,6 +66,33 @@ const PixelDock: React.FC = () => {
                     </button>
                 </div>
             ))}
+
+            {/* Separator */}
+            <div className="w-[1px] h-6 bg-border mx-1 sm:mx-2" />
+
+            {/* Retro Toggle */}
+            <div className="group relative flex flex-col items-center">
+                <div
+                    className={`absolute -top-12 transition-all duration-200 bg-void border border-border px-3 py-1 rounded text-[9px] font-pixel text-text-primary pointer-events-none whitespace-nowrap shadow-xl z-20
+                    ${activeTooltip === 99 ? 'opacity-100 scale-100' : 'opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100'}`}
+                >
+                    {isRetroActive ? 'MODERN MODE' : 'RETRO MODE'}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-void border-b border-r border-border rotate-45" />
+                </div>
+                <button
+                    onClick={() => {
+                        toggleRetro();
+                        unlock('RETRO_ENTHUSIAST');
+                        if (window.matchMedia('(hover: none)').matches) {
+                            setActiveTooltip(99);
+                            setTimeout(() => setActiveTooltip(null), 2000);
+                        }
+                    }}
+                    className={`text-xl sm:text-2xl transform transition-all duration-200 hover:scale-150 hover:-translate-y-4 active:scale-90 ${isRetroActive ? 'text-primary drop-shadow-[0_0_8px_rgba(245,166,35,0.6)]' : 'text-text-muted'} focus:outline-none`}
+                >
+                    📺
+                </button>
+            </div>
         </div>
     );
 };

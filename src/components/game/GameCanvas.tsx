@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GameEngine, GameState } from '@/lib/game-engine';
 import GameHUD from './GameHUD';
+import { useAchievements } from '@/components/providers/AchievementProvider';
 
 interface GameCanvasProps {
     onEngineReady?: (engine: GameEngine) => void;
@@ -11,6 +12,7 @@ interface GameCanvasProps {
 const GameCanvas: React.FC<GameCanvasProps> = ({ onEngineReady }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const engineRef = useRef<GameEngine | null>(null);
+    const { unlock } = useAchievements();
 
     const [gameState, setGameState] = useState<GameState>('IDLE');
     const [score, setScore] = useState(0);
@@ -33,8 +35,10 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onEngineReady }) => {
             onTimerChange: setTimer,
             onLevelChange: setLevel,
             onCoinsChange: (collected, total) => {
-                setCoinsCollected(collected);
                 setTotalCoins(total);
+            },
+            onWin: () => {
+                unlock('GAME_MASTER');
             },
         });
 

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Send, Terminal as TerminalIcon, X } from "lucide-react";
+import { Send, Terminal as TerminalIcon, X, Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
+import { useAchievements } from "@/components/providers/AchievementProvider";
 
 interface Message {
     role: "user" | "ai";
@@ -27,6 +28,7 @@ export const AIChatBox: React.FC = () => {
     const [hasStarted, setHasStarted] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    const { unlock } = useAchievements();
     const [sessionId, setSessionId] = useState("");
 
     // Initialize with boot lines
@@ -65,6 +67,10 @@ export const AIChatBox: React.FC = () => {
         const newCount = messageCount + 1;
         setMessageCount(newCount);
         sessionStorage.setItem("ibrahim_ai_count", newCount.toString());
+
+        if (newCount >= 5) {
+            unlock('VOICE_OF_REASON');
+        }
 
         try {
             const response = await fetch("/api/chat", {
@@ -117,7 +123,7 @@ export const AIChatBox: React.FC = () => {
                 <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-magenta animate-pulse shadow-[0_0_8px_var(--color-magenta)]" />
                     <span className="text-[10px] font-mono uppercase tracking-widest text-text-muted flex items-center gap-1">
-                        <TerminalIcon className="w-3 h-3" /> chat.exe — ibrahim_ai v1.0
+                        <TerminalIcon className="w-3 h-3" /> ibra_bot v2.0-beta
                     </span>
                 </div>
                 <div className="flex items-center gap-1 md:gap-3">
@@ -136,6 +142,17 @@ export const AIChatBox: React.FC = () => {
                             <X className="w-2 h-2 text-text-muted group-hover:text-white" />
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* AI Profile Header */}
+            <div className="bg-void/40 p-4 border-b border-border flex items-center gap-4">
+                <div className="w-12 h-12 rounded bg-surface-2 border-2 border-primary flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(245,166,35,0.2)] animate-pulse">
+                    👾
+                </div>
+                <div>
+                    <h3 className="text-primary font-press-start-2p text-[10px]">IBRA-BOT</h3>
+                    <p className="text-text-muted text-[8px] mt-1 uppercase tracking-tighter">AI Assistant · Sarcasm Modules: ACTIVE</p>
                 </div>
             </div>
 
