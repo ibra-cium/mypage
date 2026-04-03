@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import SectionLabel from '@/components/ui/SectionLabel';
 import { FilterTabs } from './FilterTabs';
 import { ProjectCard, Project } from './ProjectCard';
+import { fetchGitHubProjects } from '@/lib/github';
 
-const PROJECTS_DATA: Project[] = [
+const FEATURED_PROJECTS: Project[] = [
     {
         id: '1',
         title: 'NeuralChat AI',
@@ -19,7 +20,7 @@ const PROJECTS_DATA: Project[] = [
     },
     {
         id: '2',
-        title: 'DIU-NextGen-CP-Tracker',
+        title: 'DIU NextGen CP Tracker',
         description: 'Automated Competitive Programming tracking system with Spring Boot & AI. Real-time stats integration for DIU students.',
         tags: ['Spring Boot', 'Java', 'PostgreSQL'],
         category: 'Web',
@@ -39,6 +40,7 @@ const PROJECTS_DATA: Project[] = [
         cartId: 'CART-003',
         url: 'https://github.com/ibra-cium/Rock-Paper-Scissors-Game',
         previewType: 'game',
+        featured: true,
     },
     {
         id: '4',
@@ -69,11 +71,40 @@ const CATEGORIES = ['All', 'AI / ML', 'Web', 'Games', 'Tools'];
 const GLOW_COLORS: ('primary' | 'secondary' | 'accent')[] = ['primary', 'secondary', 'accent'];
 
 export const ProjectsSection = () => {
+    const [projects, setProjects] = useState<Project[]>(FEATURED_PROJECTS);
     const [activeCategory, setActiveCategory] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
     const [viewMode, setViewMode] = useState<'scroll' | 'grid'>('grid');
     const [showAllMobile, setShowAllMobile] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const sectionRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const loadGitHubRepos = async () => {
+            try {
+                const githubRepos = await fetchGitHubProjects('ibra-cium');
+
+                // Merge with featured projects, avoiding duplicates by URL
+                const combined = [...FEATURED_PROJECTS];
+                githubRepos.forEach(repo => {
+                    const isDuplicate = combined.some(p =>
+                        p.url?.toLowerCase().replace(/\/$/, '') === repo.url?.toLowerCase().replace(/\/$/, '')
+                    );
+                    if (!isDuplicate) {
+                        combined.push(repo);
+                    }
+                });
+
+                setProjects(combined);
+            } catch (err) {
+                console.error("Error loading GitHub projects:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadGitHubRepos();
+    }, []);
 
     useEffect(() => {
         const currentSection = sectionRef.current;
@@ -86,8 +117,8 @@ export const ProjectsSection = () => {
     }, []);
 
     const filteredProjects = activeCategory === 'All'
-        ? PROJECTS_DATA
-        : PROJECTS_DATA.filter(p => p.category === activeCategory);
+        ? projects
+        : projects.filter(p => p.category === activeCategory);
 
     // On mobile grid view, cap at 3 unless expanded
     const MOBILE_LIMIT = 3;
@@ -146,8 +177,16 @@ export const ProjectsSection = () => {
                     </div>
                 </div>
 
+                {/* Loading state handle */}
+                {isLoading && (
+                    <div className="flex items-center justify-center py-20">
+                        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                        <span className="ml-3 text-primary font-pixel text-[10px] animate-pulse">RECONSTRUCTING_REPOS...</span>
+                    </div>
+                )}
+
                 {/* Cards: grid or horizontal scroll */}
-                <div className="w-full px-4 md:px-8">
+                <div className={`w-full px-4 md:px-8 transition-opacity duration-500 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
                     {viewMode === 'grid' ? (
                         <>
                             {/* Grid — all sizes; mobile shows up to MOBILE_LIMIT */}
@@ -200,7 +239,7 @@ export const ProjectsSection = () => {
 
                     {/* ── Scroll View — only when scroll mode is active ── */}
                     <div className={`flex overflow-x-auto pb-10 gap-6 snap-x snap-mandatory scrollbar-hide ${viewMode === 'grid' ? 'hidden' : ''}`}>
-                        {PROJECTS_DATA.map((project, index) => {
+                        {projects.map((project, index) => {
                             const isProjectVisible = filteredProjects.some(p => p.id === project.id);
                             if (!isProjectVisible) return null;
                             return (

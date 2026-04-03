@@ -18,8 +18,8 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "Siyam Ibrahim | Student & Hobbyist",
-  description: "CSE Undergrad @ DIU",
+  title: "Siyam Ibrahim | CSE Undergrad @ DIU",
+  description: "Student and Hobbyist",
 };
 
 export default function RootLayout({
