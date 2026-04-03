@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 const CRTMonitor: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -60,11 +61,14 @@ const CRTMonitor: React.FC = () => {
                         {/* Centered Avatar Grid */}
                         <div className="flex-1 flex items-center justify-center py-2 sm:py-4 px-1 sm:px-2">
                             <div className="relative group/avatar w-full h-full max-w-[90%] max-h-[90%] border border-border/40 bg-surface-2/30 rounded p-0.5 sm:p-1 shadow-[0_0_15px_rgba(245,166,35,0.1)]">
-                                <img
+                                <Image
                                     src="/avatar-grid.png"
                                     alt="Ibrahim Pixel Avatars"
-                                    className="w-full h-full object-contain pixelated grayscale-[5%] contrast-[1.1] brightness-[1.1]"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    className="object-contain pixelated grayscale-[5%] contrast-[1.1] brightness-[1.1]"
                                     style={{ filter: "drop-shadow(0 0 5px rgba(245,166,35,0.2))" }}
+                                    priority
                                 />
                                 <div className="absolute top-0 right-0 p-1 opacity-40">
                                     <div className="w-1.5 h-1.5 bg-primary rounded-full animate-ping" />

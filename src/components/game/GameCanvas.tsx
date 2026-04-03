@@ -35,6 +35,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onEngineReady }) => {
             onTimerChange: setTimer,
             onLevelChange: setLevel,
             onCoinsChange: (collected, total) => {
+                setCoinsCollected(collected);
                 setTotalCoins(total);
             },
             onWin: () => {
@@ -49,7 +50,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onEngineReady }) => {
         return () => {
             // Cleanup engine if needed
         };
-    }, [onEngineReady]);
+    }, [onEngineReady, unlock]);
 
     return (
         <div className="relative w-full aspect-[3/2] bg-void overflow-hidden">
