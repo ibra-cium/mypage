@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import Profile3D from '../hero/Profile3D';
 
 const CharacterCard = () => {

@@ -2,7 +2,7 @@
 
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Stage, PresentationControls, Html, Float, MeshDistortMaterial } from "@react-three/drei";
+import { useGLTF, Stage, PresentationControls, Html, Float } from "@react-three/drei";
 import * as THREE from "three";
 
 function HologramBase() {
@@ -95,7 +95,7 @@ function Model({ url }: { url: string }) {
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, []);
 
-    useFrame((state) => {
+    useFrame(() => {
         if (!modelRef.current) return;
 
         // Base auto-rotation (Ultra-slow)
