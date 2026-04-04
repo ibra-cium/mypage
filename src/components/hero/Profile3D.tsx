@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, Suspense, useState, useEffect } from "react";
+import React, { useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Stage, PresentationControls, Html, Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -10,7 +10,7 @@ function HologramBase() {
         <group position={[0, -4.3, 0]}>
             {/* Main Glowing Ring (Top) */}
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
-                <torusGeometry args={[1.5, 0.03, 16, 100]} />
+                <torusGeometry args={[1.5, 0.03, 16, 48]} />
                 <meshStandardMaterial
                     emissive="var(--color-neon-green)"
                     emissiveIntensity={15}
@@ -21,7 +21,7 @@ function HologramBase() {
             {/* Depth Rings (Stacked downwards) */}
             {[0.1, 0.25, 0.4].map((y, i) => (
                 <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[0, -y, 0]}>
-                    <torusGeometry args={[1.5 - (y * 0.2), 0.01, 16, 100]} />
+                    <torusGeometry args={[1.5 - (y * 0.2), 0.01, 16, 48]} />
                     <meshStandardMaterial
                         emissive="var(--color-neon-green)"
                         emissiveIntensity={10 / (i + 1)}
@@ -34,7 +34,7 @@ function HologramBase() {
 
             {/* Outer Fainter Ring */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
-                <torusGeometry args={[1.8, 0.01, 16, 100]} />
+                <torusGeometry args={[1.8, 0.01, 16, 48]} />
                 <meshStandardMaterial
                     emissive="var(--color-cyber-cyan)"
                     emissiveIntensity={8}
@@ -82,30 +82,18 @@ function HologramBase() {
 function Model({ url }: { url: string }) {
     const { scene } = useGLTF(url);
     const modelRef = useRef<THREE.Group>(null);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({
-                x: (e.clientX / window.innerWidth) * 2 - 1,
-                y: -(e.clientY / window.innerHeight) * 2 + 1,
-            });
-        };
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
-
-    useFrame(() => {
+    useFrame((state) => {
         if (!modelRef.current) return;
 
         // Base auto-rotation (Ultra-slow)
         modelRef.current.rotation.y += 0.0001;
 
         // Subtle mouse follow (Very smooth)
-        modelRef.current.rotation.y += mousePos.x * 0.01;
+        modelRef.current.rotation.y += state.pointer.x * 0.01;
         modelRef.current.rotation.x = THREE.MathUtils.lerp(
             modelRef.current.rotation.x,
-            mousePos.y * 0.01,
+            state.pointer.y * 0.01,
             0.015
         );
     });
@@ -139,8 +127,8 @@ const Profile3D: React.FC<{ modelUrl?: string }> = ({ modelUrl = "/3dprofile.glb
             <Canvas
                 shadows
                 camera={{ position: [0, 0, 4], fov: 30 }}
-                gl={{ antialias: true, alpha: true }}
-                dpr={[1, 2]}
+                gl={{ powerPreference: "high-performance", antialias: false, alpha: true }}
+                dpr={[1, 1.5]}
                 className="!overflow-visible"
             >
                 <Suspense fallback={<Loader />}>
