@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Profile3D from '../hero/Profile3D';
 
 const CharacterCard = () => {
     return (
@@ -13,20 +14,10 @@ const CharacterCard = () => {
             <div className="flex flex-col gap-8">
                 {/* Avatar & Basic Info */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
-                    <div className="relative w-24 h-24 shrink-0 group-hover:scale-105 transition-transform duration-500">
-                        <div className="absolute inset-0 bg-[var(--color-neon-green)]/10 animate-pulse rounded-sm" />
-                        <Image
-                            src="/github_profile.png"
-                            alt="Ibrahim"
-                            width={96}
-                            height={96}
-                            className="w-full h-full object-cover rounded-sm border-2 border-[var(--color-neon-green)] relative z-10 pixelated shadow-[0_0_20px_rgba(57,255,20,0.4)]"
-                            onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = "https://api.dicebear.com/7.x/pixel-art/svg?seed=Ibrahim";
-                            }}
-                        />
-                        {/* Status Indicator */}
-                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[var(--color-neon-green)] border-2 border-[var(--color-surface)] rounded-full z-20 animate-pulse shadow-[0_0_10px_rgba(57,255,20,1)]" />
+                    <div className="relative w-40 h-40 shrink-0 group-hover:scale-105 transition-transform duration-500">
+                        <div className="w-full h-full relative z-10">
+                            <Profile3D />
+                        </div>
                     </div>
 
                     <div className="flex flex-col pt-1 text-center sm:text-left flex-1 min-w-0">
